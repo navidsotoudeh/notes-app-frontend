@@ -7,6 +7,8 @@ import { FormValues } from "./FormInterface";
 
 //component
 import Button from "@/components/UIKit/Button";
+import Input from "@/components/UIKit/Input";
+import Text from "@/components/UIKit/Text";
 
 const Login: NextPage = () => {
   //hooks
@@ -17,26 +19,58 @@ const Login: NextPage = () => {
     formState: { errors },
     reset,
   } = useForm();
+  console.log("errors", errors);
   const onSubmit: SubmitHandler<FormValues> = (newContact) => {
     // dispatch(setContactForm(newContact));
     console.log("aa");
   };
   return (
-    <div className="w-full justify-center items-center">
-      please login
+    <div className="border border-gray-600 p-4">
+      <p className="bg-purple-300 w-[200px] py-4 rounded-2xl flex justify-center">
+        Registration Form
+      </p>
+
       <form
-        className="grid w-full grid-cols-2 gap-6 rounded-[12px] p-4 pb-[120px]"
+        className="bg-white w-full flex items-center justify-center gap-2"
         onSubmit={handleSubmit(onSubmit)}
       >
-        ss
-        <div className="col-span-2 flex w-full justify-center bg-red-500">
-          <Button
-            label="ثبت"
-            size="large"
-            onClick={handleSubmit((d) => onSubmit(d as FormValues))}
-            // loading={isLoading}
+        {" "}
+        <div className="flex flex-col">
+          <input
+            type="text"
+            {...register("firstname", { required: true })}
+            className="border border-gray-400 p-4 outline-0 rounded-xl"
+            placeholder="firstname"
           />
+          {errors.firstname && (
+            <span style={{ color: "red" }}>*firstname* is mandatory </span>
+          )}
         </div>
+        <div className="flex flex-col">
+          <input
+            type="text"
+            {...register("lastname", { required: true })}
+            className="border border-gray-400 p-4 outline-0 rounded-xl"
+            placeholder="lastname"
+          />
+          {errors.lastname && (
+            <span style={{ color: "red" }}>*lastname* is mandatory </span>
+          )}
+        </div>
+        <div className="flex flex-col">
+          <input
+            type="email"
+            {...register("email", { required: true })}
+            className="border border-gray-400 p-4 outline-0 rounded-xl"
+          />
+          {errors.email && (
+            <span style={{ color: "red" }}>*email* is mandatory </span>
+          )}
+        </div>
+        <input
+          type="submit"
+          className="border border-gray-400 p-4 outline-0 rounded-xl bg-cyan-400"
+        />
       </form>
     </div>
   );
