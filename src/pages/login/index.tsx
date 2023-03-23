@@ -5,6 +5,9 @@ import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { NextPage } from "next";
 import { FormValues } from "./FormInterface";
 
+//component
+import Button from "@/components/UIKit/Button";
+
 const Login: NextPage = () => {
   //hooks
   const {
@@ -19,14 +22,22 @@ const Login: NextPage = () => {
     console.log("aa");
   };
   return (
-    <div className="w-full bg-yellow-200 justify-center items-center">
+    <div className="w-full justify-center items-center">
       please login
-      {/*<form onSubmit={handleSubmit(onSubmit)} className="flex gap-2">*/}
-      {/*  <input defaultValue="firstName" {...register("firstName")} />*/}
-      {/*  <input {...register("lastName", { required: true })} />*/}
-      {/*  {errors.lastName && <span>lastName is required</span>}*/}
-      {/*  <input type="submit" />*/}
-      {/*</form>*/}
+      <form
+        className="grid w-full grid-cols-2 gap-6 rounded-[12px] p-4 pb-[120px]"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        ss
+        <div className="col-span-2 flex w-full justify-center bg-red-500">
+          <Button
+            label="ثبت"
+            size="large"
+            onClick={handleSubmit((d) => onSubmit(d as FormValues))}
+            // loading={isLoading}
+          />
+        </div>
+      </form>
     </div>
   );
 };
