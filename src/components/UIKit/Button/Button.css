@@ -1,0 +1,63 @@
+.btn-root {
+  @apply inline-flex cursor-pointer
+    items-center justify-center rounded-md  px-6 py-5 text-center text-sm font-semibold leading-3;
+}
+/*=========================================== filled ================================================*/
+.btn-filled {
+  @apply bg-primary-normal text-surface-10 shadow-sm;
+}
+.btn-filled:hover {
+  @apply bg-primary-60;
+}
+
+.btn-filled :is(:focus, :active) {
+  @apply bg-primary-70 outline-none;
+}
+
+.btn-filled:disabled {
+  @apply cursor-not-allowed bg-pastal_grey text-smoke_gray;
+  filter: grayscale(1);
+}
+/*=========================================== outline ================================================*/
+.btn-outline {
+  @apply border border-primary-normal bg-surface-10 text-primary-normal;
+}
+.btn-outline:hover {
+  @apply border-primary-60 bg-surface-10 text-primary-60;
+}
+.btn-outline:is(:focus, :active) {
+  @apply border-primary-70 text-primary-70 outline-none;
+}
+
+.btn-outline:disabled {
+  @apply cursor-not-allowed border border-text-20 text-text-20;
+}
+/*=========================================== text ================================================*/
+.btn-text {
+  @apply text-primary-normal outline-none;
+}
+.btn-text:hover {
+  @apply text-primary-60;
+}
+.btn-text:is(:focus, :active) {
+  @apply text-primary-70 outline-none;
+}
+
+.btn-text:disabled {
+  @apply text-text-20;
+}
+/*=========================================== loading ================================================*/
+.btn-loading {
+  @apply cursor-not-allowed border-blue-200;
+}
+
+.btn-progress {
+}
+/*=========================================== large ================================================*/
+.btn-large {
+  @apply h-[48px] w-[252px] px-[24px] py-[8px];
+}
+/*=========================================== medium ================================================*/
+.btn-medium {
+  @apply h-[32px] w-[86px] px-[8px] py-[4px];
+}

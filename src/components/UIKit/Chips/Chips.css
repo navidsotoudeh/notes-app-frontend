@@ -1,0 +1,12 @@
+.chips-root {
+  @apply cursor-pointer h-fit inline-flex p-4 shadow-sm text-center text-sm font-semibold rounded-full
+}
+
+
+.chips-filled {
+  @apply bg-primary-normal text-surface-10;
+}
+
+.chips-text {
+  @apply bg-transparent outline-none text-primary-normal;
+}

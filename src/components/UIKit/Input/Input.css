@@ -1,0 +1,35 @@
+.input-root {
+  @apply block w-full appearance-none rounded-md border border-surface-50 bg-transparent py-2.5 text-sm text-gray-900 placeholder-transparent;
+}
+
+.input-root:hover {
+  @apply border-secondary-normal outline-none ring-0;
+}
+
+.input-root:focus {
+  @apply border-secondary-70 outline-none ring-0;
+}
+
+.input-firstIcon {
+  @apply absolute right-3 bg-white text-sm text-gray-600;
+}
+
+.input-label {
+  @apply absolute -top-3 bg-white text-sm text-gray-600;
+}
+
+.input-secondIcon {
+  @apply absolute left-3 bg-white text-sm text-gray-600;
+}
+/*=================================*/
+.input-root-hasError {
+  @apply block w-full appearance-none rounded-md border border-Error-60 bg-transparent py-2.5 text-sm text-gray-900 placeholder-transparent;
+}
+
+.input-root-hasError:hover {
+  @apply border-Error-normal outline-none ring-0;
+}
+
+.input-root-hasError:focus {
+  @apply border-Error-80 outline-none ring-0;
+}

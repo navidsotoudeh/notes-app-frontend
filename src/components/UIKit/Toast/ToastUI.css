@@ -1,0 +1,28 @@
+.toast-container {
+    @apply w-full flex items-center
+}
+
+.toast-title{
+    font-size: 16px;
+    @apply font-semibold leading-6 text-text-40
+}
+
+.toast-subtitle{
+    font-size: 14px;
+    @apply font-bold leading-5
+}
+
+
+.toast-closeButton {
+    margin-left: auto;
+}
+.toast-success{
+    @apply text-Success-normal
+}
+.toast-error{
+    @apply text-primary-normal
+}
+.toast-info{
+    @apply text-secondary-normal
+}
+

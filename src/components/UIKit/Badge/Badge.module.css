@@ -1,0 +1,8 @@
+.root {
+  @apply relative  min-w-fit;
+}
+
+.root::before {
+  content: attr(data-count);
+  @apply absolute bg-red-500 text-white flex items-center justify-center rounded-full p-2
+}
