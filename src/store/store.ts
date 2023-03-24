@@ -1,16 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { apiSlice } from "./feautres/api/apiSlice";
-import authSlice from "./feautres/auth/authSlice";
+import { createWrapper } from "next-redux-wrapper";
+import authReducer from "./slices/auth/authSlice";
+import { userAuthApi } from "../service/userauth/userAuthApi";
+const makeStore = () =>
+  configureStore({
+    reducer: {
+      // Add the generated reducer as a specific top-level slice
+      [userAuthApi.reducerPath]: userAuthApi.reducer,
+      // user: userReducer,
+      auth: authReducer,
+    },
+    devTools: true,
 
-export const store = configureStore({
-  reducer: {
-    [apiSlice.reducerPath]: apiSlice.reducer,
-    auth: authSlice,
-  },
-  devTools: process.env.NODE_ENV !== "production",
-  middleware: (getDefaultMiddlewares) =>
-    getDefaultMiddlewares().concat(apiSlice.middleware),
-});
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(userAuthApi.middleware),
+  });
 
-export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
+export const wrapper = createWrapper(makeStore);
