@@ -62,10 +62,12 @@ const UserInfoPage: NextPage = ({ userId }) => {
     //   });
   };
   return (
-    <>
+    <div className="flex flex-col gap-2 p-4 bg-orange-100 h-ful">
       <div>Information of user</div>
-      <p>{`username:${user?.username}`}</p>
-      <form className="rounded-[12px] p-12" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="rounded-[12px] p-12 w-1/2 bg-blue-200 p-2"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="mb-6 flex items-center">
           <div className="w-1/3">
             <label
@@ -75,11 +77,11 @@ const UserInfoPage: NextPage = ({ userId }) => {
               username
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="w-2/3">
             <input
               className="w-full appearance-none rounded border-2 border-gray-400 bg-white py-2 px-4 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
               type="text"
-              placeholder="نام فارسی"
+              placeholder="username"
               {...register("username", { required: true })}
             />
             {errors.username && errors.username.type === "required" && (
@@ -87,15 +89,15 @@ const UserInfoPage: NextPage = ({ userId }) => {
             )}
           </div>
         </div>
-        <div className="mb-6 md:flex md:items-center">
-          <div className="md:w-1/3">
+        <div className="mb-6 flex items-center">
+          <div className="w-1/3">
             <label className="pr-4 font-bold text-black" htmlFor="password">
               password
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="w-2/3">
             <input
-              className="w-full rounded border-2 border-gray-400 bg-white py-2 px-4 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded border-2 bg-white py-2 px-4 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none"
               type="text"
               placeholder="password"
               {...register("password", { required: true })}
@@ -105,26 +107,34 @@ const UserInfoPage: NextPage = ({ userId }) => {
             )}
           </div>
         </div>
-        <div className="w-full">
-          <Controller
-            name="roles"
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, value } }) => (
-              <Select
-                isClearable
-                options={options}
-                value={value}
-                placeholder="roles"
-              />
-            )}
-          />
+        <div className="mb-6 flex items-center">
+          <div className="w-1/3">
+            <label className="pr-4 font-bold text-black" htmlFor="password">
+              password
+            </label>
+          </div>
+          <div className="w-2/3">
+            <Controller
+              name="roles"
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <Select
+                  isClearable
+                  options={options}
+                  onChange={onChange}
+                  value={value}
+                  placeholder="roles"
+                />
+              )}
+            />
+          </div>
           {errors.roles && errors.roles.type === "required" && (
             <span className="text-red-500">این فیلد الزامی است</span>
           )}
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
