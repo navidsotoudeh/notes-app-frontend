@@ -21,19 +21,17 @@ const Users: NextPage = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
-  console.log("users", users);
 
   const columns = ["Id", "Name", "Roles"];
 
   const [rows, setRows] = useState(null);
-  console.log("rows", rows);
 
   useEffect(() => {
     if (users && users?.length) {
       const newRows = users?.map((ele) => ({
         Id: ele._id,
         Name: ele.username,
-        roles: ele.roles,
+        Roles: ele.roles,
       }));
       setRows(newRows);
     }
