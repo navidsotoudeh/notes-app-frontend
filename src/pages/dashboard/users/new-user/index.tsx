@@ -7,7 +7,9 @@ import Select from "react-select";
 import { NextPage } from "next";
 import { FormValues } from "./FormInterface";
 
-import { useAddNewUserMutation } from "../../../../service/userauth/userAuthApi";
+//redux
+import { useAddNewUserMutation } from "../../../../service/users/userApi";
+import { toast } from "react-toastify";
 
 const NewUser: NextPage = () => {
   //hooks
@@ -16,7 +18,6 @@ const NewUser: NextPage = () => {
     control,
     register,
     formState: { errors },
-    reset,
   } = useForm();
   const options = [
     { value: "Employee", label: "Employee" },
@@ -33,7 +34,14 @@ const NewUser: NextPage = () => {
       roles: ["Employee"],
     };
     console.log("newData", newData);
-    addNewUser(newData);
+    addNewUser(newData)
+      .unwrap()
+      .then(() => {
+        toast.success("user created");
+      })
+      .catch(() => {
+        toast.error("There is a problem");
+      });
   };
 
   return (
@@ -42,7 +50,6 @@ const NewUser: NextPage = () => {
       <div className="flex w-full flex-col justify-between bg-white">
         <form
           className="flex w-full flex-col gap-2 rounded-[12px]"
-          id="base-information-form"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex w-[300px] flex-col gap-3">
@@ -78,27 +85,25 @@ const NewUser: NextPage = () => {
             </div>
             <div className="mt-[10px] w-full">
               <Controller
-                name="brandId"
+                name="role"
                 control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, value } }) => (
+                render={({ field }) => (
                   <Select
+                    {...field}
                     isClearable
                     options={options}
-                    onChange={onChange}
-                    value={value}
                     placeholder="select the role"
                   />
                 )}
               />
-              {errors.brandId && errors.brandId.type === "required" && (
+              {errors.role && errors.role.type === "required" && (
                 <span className="text-red-500">این فیلد الزامی است</span>
               )}
             </div>
           </div>
           <button
             className="mt-[5px] flex h-[35px] w-[75px] cursor-pointer items-center justify-center rounded-[8px] border bg-green-500 text-white"
-            onClick={handleSubmit((d) => onSubmit(d))}
+            onClick={handleSubmit((d) => onSubmit(d as FormValues))}
           >
             submit
           </button>

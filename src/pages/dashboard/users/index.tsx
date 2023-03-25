@@ -5,13 +5,22 @@ import Link from "next/link";
 //type
 import { NextPage } from "next";
 
-//component
-import Button from "@/components/UIKit/Button";
-import Input from "@/components/UIKit/Input";
-import Text from "@/components/UIKit/Text";
-
+//redux
+import { useGetUsersQuery } from "../../../service/users/userApi";
 const Users: NextPage = () => {
   //hooks
+  const {
+    data: users,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetUsersQuery("usersList", {
+    pollingInterval: 60000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
+  console.log("users", users);
   const {
     handleSubmit,
     control,
