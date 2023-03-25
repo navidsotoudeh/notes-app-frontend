@@ -19,7 +19,7 @@ const Login: NextPage = () => {
     formState: { errors },
     reset,
   } = useForm();
-  console.log("errors", errors);
+
   const onSubmit: SubmitHandler<FormValues> = (newContact) => {
     // dispatch(setContactForm(newContact));
     console.log("aa");

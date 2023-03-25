@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
+
 import authReducer from "./slices/auth/authSlice";
 import usersReducer from "./slices/users/usersSlice";
 

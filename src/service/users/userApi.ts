@@ -7,7 +7,7 @@ const initialState = usersAdapter.getInitialState();
 export const usersApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3500/" }),
-  endpoints: (builder) => ({
+  endpoints: (builder: any) => ({
     getUsers: builder.query({
       query: () => ({
         url: "/users",
@@ -15,13 +15,14 @@ export const usersApi = createApi({
           return response.status === 200 && !result.isError;
         },
       }),
-      transformResponse: (responseData) => {
-        const loadedUsers = responseData.map((user) => {
-          user.id = user._id;
-          return user;
-        });
-        return usersAdapter.setAll(initialState, loadedUsers);
-      },
+      // transformResponse: (responseData: any) => {
+      //   console.log("responseData,", responseData);
+      //   const loadedUsers = responseData.map((user) => {
+      //     user.id = user._id;
+      //     return user;
+      //   });
+      //   return usersAdapter.setAll(initialState, loadedUsers);
+      // },
       providesTags: (result, error, arg) => {
         if (result?.ids) {
           return [
