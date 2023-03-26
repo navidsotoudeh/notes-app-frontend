@@ -5,7 +5,7 @@ import Link from "next/link";
 //type
 import { NextPage } from "next";
 //component
-import Table from "../../../components/Table";
+import Table from "../../../components/table";
 //redux
 import { useGetUsersQuery } from "../../../service/users/userApi";
 const Users: NextPage = () => {

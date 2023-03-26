@@ -3,9 +3,9 @@ import Link from "next/link";
 
 function Header() {
   return (
-    <Link href="/login" className="w-full bg-gray-100">
-      Login
-    </Link>
+    <div className="w-full h-[50px] bg-white justify-center flex items-center text-lg">
+      Tech notes app
+    </div>
   );
 }
 

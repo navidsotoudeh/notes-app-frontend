@@ -1,8 +1,13 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { wrapper } from "@/store/store";
+import Layout from "@/components/layout/Layout";
 
 export function NotesApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <Layout>
+      <Component {...pageProps} />{" "}
+    </Layout>
+  );
 }
 export default wrapper.withRedux(NotesApp);
