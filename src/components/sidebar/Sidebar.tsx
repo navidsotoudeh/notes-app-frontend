@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-const Sidebar = () => {
-  // State to keep track of open items
+const Sidebar = ({ sidebarStatus, onClose }) => {
+  console.log("sidebarStatus", sidebarStatus);
+
   const [openItems, setOpenItems] = useState([]);
 
   // Handler function to toggle an item's open state
@@ -39,7 +40,15 @@ const Sidebar = () => {
         { id: 3, label: "Completed Orders" },
       ],
     },
-    // Add more items here
+    {
+      id: 3,
+      label: "Users",
+      icon: "...",
+      subitems: [
+        { id: 1, label: "Users" },
+        { id: 2, label: "New User" },
+      ],
+    },
   ];
 
   // Function to render an item's subitems
@@ -56,8 +65,7 @@ const Sidebar = () => {
     const isOpen = openItems.includes(item.id);
 
     return (
-      <div key={item.id}>
-        {/* Item label and icon */}
+      <div key={item.id} className="">
         <div
           className="flex items-center my-4 cursor-pointer"
           onClick={() => toggleItem(item.id)}
@@ -72,8 +80,6 @@ const Sidebar = () => {
             )}
           </span>
         </div>
-
-        {/* Subitems */}
         {isOpen && renderSubitems(item.subitems)}
       </div>
     );
@@ -85,7 +91,27 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-gray-800 h-screen w-64 px-4 py-8">{renderItems()}</div>
+    <div
+      className={`fixed top-0 left-0 h-full bg-gray-800 z-10 transition-all duration-300 ease-in-out ${
+        sidebarStatus ? "w-[300px]" : "w-[120px]"
+      }`}
+    >
+      <button className="p-4 text-white" onClick={onClose}>
+        <svg
+          className="w-6 h-6 fill-current"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>Close</title>
+          <path
+            fillRule="evenodd"
+            d="M10 8.586L6.707 5.293a1 1 0 1 0-1.414 1.414L8.586 10l-3.293 3.293a1 1 0 1 0 1.414 1.414L10 11.414l3.293 3.293a1 1 0 1 0 1.414-1.414L11.414 10l3.293-3.293a1 1 0 0 0-1.414-1.414L10 8.586z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </button>
+      {renderItems()}
+    </div>
   );
 };
 
