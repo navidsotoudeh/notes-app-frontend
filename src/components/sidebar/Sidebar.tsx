@@ -80,7 +80,16 @@ const Sidebar = ({ sidebarStatus, onClose }) => {
             )}
           </span>
         </div>
-        {isOpen && renderSubitems(item.subitems)}
+        {/*{isOpen && renderSubitems(item.subitems)}*/}
+        {isOpen && (
+          <div
+            className={`transition-all duration-300  ${
+              isOpen ? "h-[200px]" : "h-[0]"
+            }`}
+          >
+            {renderSubitems(item.subitems)}
+          </div>
+        )}
       </div>
     );
   };
