@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  HomeIcon,
+  UserIcon,
+  DocumentTextIcon,
+} from "@heroicons/react/solid";
+import { Transition } from "@headlessui/react";
+import Link from "next/link";
 
 const Sidebar = ({ sidebarStatus, onClose }) => {
-  console.log("sidebarStatus", sidebarStatus);
-
   const [openItems, setOpenItems] = useState([]);
 
-  // Handler function to toggle an item's open state
   const toggleItem = (itemId) => {
     setOpenItems((prevOpenItems) => {
       if (prevOpenItems.includes(itemId)) {
@@ -21,75 +25,77 @@ const Sidebar = ({ sidebarStatus, onClose }) => {
   // Array of items to display in the sidebar
   const items = [
     {
-      id: 1,
+      parent_id: 1,
       label: "Dashboard",
-      icon: "...",
-      subitems: [
-        { id: 1, label: "Overview" },
-        { id: 2, label: "Analytics" },
-        { id: 3, label: "Sales" },
-      ],
+      link: "./",
+      icon: <HomeIcon className="h-6 w-6 text-white" />,
+      subItems: [],
     },
     {
-      id: 2,
-      label: "Orders",
-      icon: "...",
-      subitems: [
-        { id: 1, label: "New Orders" },
-        { id: 2, label: "Pending Orders" },
+      parent_id: 2,
+      label: "Notes",
+
+      icon: <DocumentTextIcon className="h-6 w-6 text-white" />,
+      subItems: [
+        { id: 1, label: "Notes", link: "" },
+        { id: 2, label: "New Notes" },
         { id: 3, label: "Completed Orders" },
       ],
     },
     {
-      id: 3,
+      parent_id: 3,
       label: "Users",
-      icon: "...",
-      subitems: [
-        { id: 1, label: "Users" },
-        { id: 2, label: "New User" },
+
+      icon: <UserIcon className="h-6 w-6 text-white" />,
+      subItems: [
+        { id: 1, label: "Users", link: "./dashboard/users" },
+        { id: 2, label: "New User", link: "./dashboard/users" },
       ],
     },
   ];
 
-  // Function to render an item's subitems
-  const renderSubitems = (subitems) => {
-    return subitems.map((subitem) => (
-      <div key={subitem.id} className="ml-6 my-2">
-        <span className="text-gray-400">{subitem.label}</span>
+  const renderSubItems = (subItems, isOpen) => {
+    return (
+      <div className="ml-6 my-2">
+        <Transition
+          show={isOpen}
+          enter="transition-transform origin-top duration-300"
+          enterFrom="scale-y-0"
+          enterTo="scale-y-100"
+          leave="transition-transform origin-top duration-300"
+          leaveFrom="scale-y-100"
+          leaveTo="scale-y-0"
+        >
+          {subItems.map((subItem) => (
+            <Link key={subItem.id} href={`${subItem.link}`} className="block">
+              <span className="text-gray-400">{subItem.label}</span>
+            </Link>
+          ))}
+        </Transition>
       </div>
-    ));
+    );
   };
 
-  // Function to render an item and its subitems
   const renderItem = (item) => {
-    const isOpen = openItems.includes(item.id);
+    const isOpen = openItems.includes(item.parent_id);
 
     return (
-      <div key={item.id} className="">
+      <div key={item.parent_id} className="">
         <div
           className="flex items-center my-4 cursor-pointer"
-          onClick={() => toggleItem(item.id)}
+          onClick={() => toggleItem(item.parent_id)}
         >
           {item.icon}
           <span className="ml-2 text-white">{item.label}</span>
           <span className="ml-auto">
             {isOpen ? (
-              <FontAwesomeIcon icon={faChevronUp} size="lg" color="#ffffff" />
+              <ChevronUpIcon className="h-6 w-6 text-white" />
             ) : (
-              <FontAwesomeIcon icon={faChevronDown} size="lg" color="#ffffff" />
+              <ChevronDownIcon className="h-6 w-6 text-white" />
             )}
           </span>
         </div>
-        {/*{isOpen && renderSubitems(item.subitems)}*/}
-        {isOpen && (
-          <div
-            className={`transition-all duration-300  ${
-              isOpen ? "h-[200px]" : "h-[0]"
-            }`}
-          >
-            {renderSubitems(item.subitems)}
-          </div>
-        )}
+        {item.subItems && renderSubItems(item.subItems, isOpen)}
       </div>
     );
   };
@@ -101,7 +107,7 @@ const Sidebar = ({ sidebarStatus, onClose }) => {
 
   return (
     <div
-      className={`fixed top-0 left-0 h-full bg-gray-800 z-10 transition-all duration-300 ease-in-out ${
+      className={`h-full bg-gray-800 z-10 transition-all duration-300 ease-in-out ${
         sidebarStatus ? "w-[300px]" : "w-[120px]"
       }`}
     >
