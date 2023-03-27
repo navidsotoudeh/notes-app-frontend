@@ -20,12 +20,11 @@ const UserInfoPage: NextPage = () => {
   const router = useRouter();
   const { userId } = router.query;
 
-  const { user } = useGetUsersQuery("usersList", {
+  const { note } = useGetUsersQuery("notesList", {
     selectFromResult: ({ data }) => ({
-      user: data?.find((ele) => ele.id === userId),
+      note: data?.find((ele) => ele.id === noteId),
     }),
   });
-  console.log("user", user);
   const [updateUser, { isLoading, isSuccess, isError, error }] =
     useUpdateUserMutation();
   const {
@@ -44,10 +43,6 @@ const UserInfoPage: NextPage = () => {
     if (user) {
       setValue("username", user.username ?? "");
       setValue("password", user.password ?? "");
-      console.log(
-        "AA",
-        options.some((ele) => user?.roles.indexOf(ele.value) !== -1)
-      );
       setValue(
         "roles",
         options.filter((ele) => user?.roles.indexOf(ele.value) !== -1) ?? []
@@ -55,7 +50,6 @@ const UserInfoPage: NextPage = () => {
     }
   }, [user]);
   const onSubmit: SubmitHandler<any> = (data) => {
-    console.log("data", data);
     const newData = {
       id: userId,
       username: data.username,

@@ -21,15 +21,13 @@ const Users: NextPage = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
-  console.log("users", users);
   const [rows, setRows] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  console.log("selectedUser", selectedUser);
   useEffect(() => {
     if (users && users?.length) {
       const newRows = users?.map((ele) => ({
-        Id: ele._id,
+        Id: ele.id,
         Name: ele.username,
         Roles: ele.roles,
       }));
@@ -41,7 +39,6 @@ const Users: NextPage = () => {
   }, [users]);
   const handleOnEdit = (row) => {
     setSelectedUser(row);
-    console.log("row", row);
     Router.push(`/dashboard/users/${row.Id}`);
   };
   return (

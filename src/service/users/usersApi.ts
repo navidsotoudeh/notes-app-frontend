@@ -16,11 +16,17 @@ export const usersApi = createApi({
           return response.status === 200 && !result.isError;
         },
       }),
+      // transformResponse: (responseData) => {
+      //   const loadedUsers = responseData.map((user) => {
+      //     user.id = user._id;
+      //     return user;
+      //   });
+      //   return usersAdapter.setAll(initialState, loadedUsers);
+      // },
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log(data);
-          dispatch(setAllUsers());
+          dispatch(setAllUsers(data));
         } catch (err) {
           console.log(err);
         }

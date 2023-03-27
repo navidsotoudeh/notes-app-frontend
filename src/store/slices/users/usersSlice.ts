@@ -2,10 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const usersSlice = createSlice({
   name: "users",
-  initialState: { allUsers: "abcdefg" },
+  initialState: { allUsers: null },
   reducers: {
     setAllUsers: (state: any, action) => {
-      console.log("action:", action);
       state.allUsers = action.payload;
     },
     // userLoggedIn: (state, action: PayloadAction<Required<userTypes>>) => {

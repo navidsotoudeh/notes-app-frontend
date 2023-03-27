@@ -1,5 +1,5 @@
 //libraries
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import Select from "react-select";
 import { toast } from "react-toastify";
@@ -9,7 +9,7 @@ import { NextPage } from "next";
 import { FormValues } from "./FormInterface";
 
 //redux
-import { useAddNewNoteMutation } from "../../../../service/notes/notesApi";
+import { useAddNewNoteMutation } from "../../../service/notes/notesApi";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { selectAllUsers } from "@/store/slices/users/usersSlice";
 
@@ -23,23 +23,16 @@ const NewNote: NextPage = () => {
   } = useForm();
   //selectors
   const allUsers = useAppSelector(selectAllUsers);
-  console.log("allUsers", allUsers);
-  const options = [
-    { value: "Employee", label: "Employee" },
-    { value: "Manager", label: "Manager" },
-    { value: "Admin", label: "Admin" },
-  ];
+
   const [addNewNote, { isLoading, isSuccess, isError, error }] =
     useAddNewNoteMutation();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     const newData = {
-      userId: 2,
+      user: data.username.value,
       title: data.title,
       text: data.text,
     };
-    console.log("data", data);
-    console.log("newData", newData);
     addNewNote(newData)
       .unwrap()
       .then(() => {
@@ -103,7 +96,13 @@ const NewNote: NextPage = () => {
                   <Select
                     {...field}
                     isClearable
-                    options={options}
+                    options={
+                      allUsers &&
+                      Object.values(allUsers).map((ele, index) => ({
+                        value: ele._id,
+                        label: ele.username,
+                      }))
+                    }
                     placeholder="select the role"
                   />
                 )}

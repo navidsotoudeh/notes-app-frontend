@@ -22,7 +22,6 @@ const Login: NextPage = () => {
 
   const onSubmit: SubmitHandler<FormValues> = (newContact) => {
     // dispatch(setContactForm(newContact));
-    console.log("aa");
   };
   return (
     <div className="border border-gray-600 p-4">

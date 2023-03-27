@@ -19,7 +19,6 @@ const Dashboard: NextPage = () => {
     formState: { errors },
     reset,
   } = useForm();
-  console.log("errors", errors);
 
   return (
     <div className="border border-gray-600 p-4 flex flex-col gap-4">

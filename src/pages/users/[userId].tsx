@@ -25,7 +25,6 @@ const UserInfoPage: NextPage = () => {
       user: data?.find((ele) => ele.id === userId),
     }),
   });
-  console.log("user", user);
   const [updateUser, { isLoading, isSuccess, isError, error }] =
     useUpdateUserMutation();
   const {
@@ -55,7 +54,6 @@ const UserInfoPage: NextPage = () => {
     }
   }, [user]);
   const onSubmit: SubmitHandler<any> = (data) => {
-    console.log("data", data);
     const newData = {
       id: userId,
       username: data.username,

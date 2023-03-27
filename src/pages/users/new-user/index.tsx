@@ -33,7 +33,6 @@ const NewUser: NextPage = () => {
       password: data.password,
       roles: ["Employee"],
     };
-    console.log("newData", newData);
     addNewUser(newData)
       .unwrap()
       .then(() => {

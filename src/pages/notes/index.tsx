@@ -1,5 +1,5 @@
 //libraries
-import React, { useState, useEffect } from "react";
+import eact, { useState, useEffect } from "react";
 import Router from "next/router";
 import Link from "next/link";
 //type
@@ -21,11 +21,10 @@ const Notes: NextPage = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
-  console.log("users", users);
+
   const [rows, setRows] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  console.log("selectedUser", selectedUser);
   useEffect(() => {
     if (users && users?.length) {
       const newRows = users?.map((ele) => ({
@@ -41,7 +40,6 @@ const Notes: NextPage = () => {
   }, [users]);
   const handleOnEdit = (row) => {
     setSelectedUser(row);
-    console.log("row", row);
     Router.push(`/dashboard/users/${row.Id}`);
   };
   return (
