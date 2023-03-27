@@ -4,22 +4,30 @@ import { useRouter } from "next/router";
 import Select from "react-select";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { NextPage } from "next";
+import { toast } from "react-toastify";
 
 //type
 
 //redux
-import { useGetUsersQuery } from "../../../service/users/userApi";
+import {
+  useGetUsersQuery,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+} from "../../../service/users/userApi";
 
-const UserInfoPage: NextPage = ({ userId }) => {
+const UserInfoPage: NextPage = () => {
   //hooks
+  const router = useRouter();
+  const { userId } = router.query;
+
   const { user } = useGetUsersQuery("usersList", {
     selectFromResult: ({ data }) => ({
       user: data?.find((ele) => ele.id === userId),
     }),
   });
   console.log("user", user);
-  const router = useRouter();
-
+  const [updateUser, { isLoading, isSuccess, isError, error }] =
+    useUpdateUserMutation();
   const {
     register,
     handleSubmit,
@@ -34,38 +42,41 @@ const UserInfoPage: NextPage = ({ userId }) => {
   ];
   useEffect(() => {
     if (user) {
-      setValue("id", user.id ?? null);
       setValue("username", user.username ?? "");
       setValue("password", user.password ?? "");
+      console.log(
+        "AA",
+        options.some((ele) => user?.roles.indexOf(ele.value) !== -1)
+      );
       setValue(
         "roles",
-        options.find((ele) => ele.value === user.roles[0]) ?? ""
+        options.filter((ele) => user?.roles.indexOf(ele.value) !== -1) ?? []
       );
     }
   }, [user]);
   const onSubmit: SubmitHandler<any> = (data) => {
     console.log("data", data);
-    // callPutUpdatedColorApi({
-    //   data: newData,
-    // })!
-    //   .then(() => {
-    //     toast.success("فرم با موفقیت تغییر یافت");
-    //     callGetColorApi({
-    //       params: {
-    //         id: draftId,
-    //       },
-    //     });
-    //     navigate("/catalog/colors");
-    //   })
-    //   .catch(() => {
-    //     toast.error("ارسال فرم ناموفق بود");
-    //   });
+    const newData = {
+      id: userId,
+      username: data.username,
+      roles: data.roles.map((e) => e.value),
+      password: data.password,
+      active: true,
+    };
+    updateUser(newData)
+      .unwrap()
+      .then(() => {
+        toast.success("فرم با موفقیت تغییر یافت");
+      })
+      .catch(() => {
+        toast.error("ارسال فرم ناموفق بود");
+      });
   };
   return (
-    <div className="flex flex-col gap-2 p-4 bg-orange-100 h-ful">
+    <div className="flex flex-col gap-2 p-4 bg-orange-100 h-ful w-full">
       <div>Information of user</div>
       <form
-        className="rounded-[12px] p-12 w-1/2 bg-blue-200 p-2"
+        className="rounded-[12px] p-12 w-full bg-blue-200 p-2"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="mb-6 flex items-center">
@@ -120,6 +131,7 @@ const UserInfoPage: NextPage = ({ userId }) => {
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <Select
+                  isMulti
                   isClearable
                   options={options}
                   onChange={onChange}
@@ -132,6 +144,14 @@ const UserInfoPage: NextPage = ({ userId }) => {
           {errors.roles && errors.roles.type === "required" && (
             <span className="text-red-500">این فیلد الزامی است</span>
           )}
+        </div>
+        <div className="col-span-2 flex w-full justify-center desktop:justify-end">
+          <button
+            onClick={handleSubmit((d) => onSubmit(d as FormValues))}
+            className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+          >
+            submit
+          </button>
         </div>
       </form>
     </div>

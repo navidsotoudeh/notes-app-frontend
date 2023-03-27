@@ -44,7 +44,22 @@ export const usersApi = createApi({
         };
       },
     }),
+    updateUser: builder.mutation({
+      query: (initialUserData) => ({
+        url: "/users",
+        method: "PATCH",
+        body: {
+          ...initialUserData,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: "User", id: arg.id }],
+    }),
   }),
 });
 
-export const { useAddNewUserMutation, useGetUsersQuery } = usersApi;
+export const {
+  useGetUsersQuery,
+  useAddNewUserMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+} = usersApi;
