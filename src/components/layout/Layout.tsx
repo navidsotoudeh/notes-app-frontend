@@ -14,7 +14,7 @@ export default function Layout({ children }) {
           sidebarStatus={sidebarStatus}
           onClose={() => setSidebarStatus((prevState) => !prevState)}
         />
-        <div className="">{children}</div>
+        <div className="w-full h-full">{children}</div>
       </div>
     </main>
   );

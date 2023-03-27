@@ -11,7 +11,7 @@ import { useGetNotesQuery } from "../../service/notes/notesApi";
 const Notes: NextPage = () => {
   //hooks
   const {
-    data: users,
+    data: notes,
     isLoading,
     isSuccess,
     isError,
@@ -21,29 +21,31 @@ const Notes: NextPage = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
-
+  console.log("notes", notes);
   const [rows, setRows] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    if (users && users?.length) {
-      const newRows = users?.map((ele) => ({
+    if (notes && notes?.length) {
+      const newRows = notes?.map((ele) => ({
         Id: ele._id,
         Name: ele.username,
         Roles: ele.roles,
+        Title: ele.title,
+        Text: ele.text,
       }));
       setRows(newRows);
     }
     return function cleanup() {
       // Side-effect cleanup...
     };
-  }, [users]);
+  }, [notes]);
   const handleOnEdit = (row) => {
     setSelectedUser(row);
-    Router.push(`/dashboard/users/${row.Id}`);
+    Router.push(`/dashboard/notes/${row.Id}`);
   };
   return (
-    <div className="border border-gray-600 p-4 flex flex-col gap-4">
+    <div className="border border-gray-600 p-4 flex flex-col gap-4 w-full bg-yellow-200">
       <p> Welcome</p>
       <p className="text-5xl">List of Notes</p>
       <Link
@@ -55,7 +57,7 @@ const Notes: NextPage = () => {
       {rows ? (
         <Table
           rows={rows}
-          columns={["Id", "Name", "Roles"]}
+          columns={["Id", "Name", "Roles", "Title", "Text"]}
           hasEdit={true}
           handleOnEdit={handleOnEdit}
         />
