@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Router from "next/router";
+import { Transition } from "@headlessui/react";
+
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -6,8 +9,6 @@ import {
   UserIcon,
   DocumentTextIcon,
 } from "@heroicons/react/solid";
-import { Transition } from "@headlessui/react";
-import Link from "next/link";
 
 const Sidebar = ({ sidebarStatus, onClose }) => {
   const [openItems, setOpenItems] = useState([]);
@@ -27,7 +28,7 @@ const Sidebar = ({ sidebarStatus, onClose }) => {
     {
       parent_id: 1,
       label: "Dashboard",
-      link: "./",
+      link: "./dashboard",
       icon: <HomeIcon className="h-6 w-6 text-white" />,
       subItems: [],
     },
@@ -37,9 +38,8 @@ const Sidebar = ({ sidebarStatus, onClose }) => {
 
       icon: <DocumentTextIcon className="h-6 w-6 text-white" />,
       subItems: [
-        { id: 1, label: "Notes", link: "./dashboard/notes" },
-        { id: 2, label: "New Notes" },
-        { id: 3, label: "Completed Orders" },
+        { id: 1, label: "Notes", link: "./notes" },
+        { id: 2, label: "New Notes", link: "./notes/new-note" },
       ],
     },
     {
@@ -48,8 +48,8 @@ const Sidebar = ({ sidebarStatus, onClose }) => {
 
       icon: <UserIcon className="h-6 w-6 text-white" />,
       subItems: [
-        { id: 1, label: "Users", link: "./dashboard/users" },
-        { id: 2, label: "New User", link: "./dashboard/users" },
+        { id: 1, label: "Users", link: "./users" },
+        { id: 2, label: "New User", link: "./users/new-user" },
       ],
     },
   ];
@@ -67,9 +67,13 @@ const Sidebar = ({ sidebarStatus, onClose }) => {
           leaveTo="scale-y-0"
         >
           {subItems.map((subItem) => (
-            <Link key={subItem.id} href={`${subItem.link}`} className="block">
+            <button
+              key={subItem.id}
+              className="block"
+              onClick={() => Router.replace(`${subItem.link}`)}
+            >
               <span className="text-gray-400">{subItem.label}</span>
-            </Link>
+            </button>
           ))}
         </Transition>
       </div>
