@@ -2,16 +2,18 @@
 import React from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import Select from "react-select";
+import { toast } from "react-toastify";
 
 //type
 import { NextPage } from "next";
 import { FormValues } from "./FormInterface";
 
 //redux
-import { useAddNewUserMutation } from "../../../../service/users/usersApi";
-import { toast } from "react-toastify";
+import { useAddNewNoteMutation } from "../../../../service/notes/notesApi";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectAllUsers } from "@/store/slices/users/usersSlice";
 
-const NewUser: NextPage = () => {
+const NewNote: NextPage = () => {
   //hooks
   const {
     handleSubmit,
@@ -19,22 +21,26 @@ const NewUser: NextPage = () => {
     register,
     formState: { errors },
   } = useForm();
+  //selectors
+  const allUsers = useAppSelector(selectAllUsers);
+  console.log("allUsers", allUsers);
   const options = [
     { value: "Employee", label: "Employee" },
     { value: "Manager", label: "Manager" },
     { value: "Admin", label: "Admin" },
   ];
-  const [addNewUser, { isLoading, isSuccess, isError, error }] =
-    useAddNewUserMutation();
+  const [addNewNote, { isLoading, isSuccess, isError, error }] =
+    useAddNewNoteMutation();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     const newData = {
-      username: data.username,
-      password: data.password,
-      roles: ["Employee"],
+      userId: 2,
+      title: data.title,
+      text: data.text,
     };
+    console.log("data", data);
     console.log("newData", newData);
-    addNewUser(newData)
+    addNewNote(newData)
       .unwrap()
       .then(() => {
         toast.success("user created");
@@ -45,7 +51,7 @@ const NewUser: NextPage = () => {
   };
 
   return (
-    <div className="border border-gray-600 p-4 flex flex-col gap-4">
+    <div className="border border-gray-600 p-4 flex flex-col gap-4 w-full">
       <p> create a new user</p>
       <div className="flex w-full flex-col justify-between bg-white">
         <form
@@ -56,36 +62,42 @@ const NewUser: NextPage = () => {
             <div className="mb-6 flex-col flex">
               <label
                 className="w-1/3 text-[14px] font-semibold text-[#505050]"
-                htmlFor="username"
+                htmlFor="title"
               >
-                username
+                Title:
               </label>
               <input
                 className="mt-[8px] w-full rounded-[10px] border border-[#E1E1E1] bg-white py-2 px-4 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none"
-                {...register("username", { required: true })}
+                {...register("title", { required: true })}
               />
-              {errors.username && errors.username.type === "required" && (
-                <span className="text-red-500">username is required</span>
+              {errors.title && errors.title.type === "required" && (
+                <span className="text-red-500">title is required</span>
               )}
             </div>
             <div className="mb-6 flex-col flex">
               <label
                 className="w-1/3 text-[14px] font-semibold text-[#505050]"
-                htmlFor="password"
+                htmlFor="text"
               >
-                password
+                Text
               </label>
-              <input
+              <textarea
                 className="mt-[8px] w-full rounded-[10px] border border-[#E1E1E1] bg-white py-2 px-4 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none"
-                {...register("password", { required: true })}
+                {...register("text", { required: true })}
               />
-              {errors.password && errors.password.type === "required" && (
-                <span className="text-red-500">password is required</span>
+              {errors.text && errors.text.type === "required" && (
+                <span className="text-red-500">text is required</span>
               )}
             </div>
             <div className="mt-[10px] w-full">
+              <label
+                className="w-1/3 text-[14px] font-semibold text-[#505050]"
+                htmlFor="text"
+              >
+                ASSIGNED TO:
+              </label>
               <Controller
-                name="role"
+                name="username"
                 control={control}
                 render={({ field }) => (
                   <Select
@@ -96,8 +108,8 @@ const NewUser: NextPage = () => {
                   />
                 )}
               />
-              {errors.role && errors.role.type === "required" && (
-                <span className="text-red-500">این فیلد الزامی است</span>
+              {errors.username && errors.username.type === "required" && (
+                <span className="text-red-500">username is required</span>
               )}
             </div>
           </div>
@@ -116,10 +128,10 @@ const NewUser: NextPage = () => {
 export async function getStaticProps() {
   return {
     props: {
-      pageTitle: "NewUser",
-      pageId: 4,
+      pageTitle: "NewNote",
+      pageId: 5,
     },
   };
 }
 
-export default NewUser;
+export default NewNote;

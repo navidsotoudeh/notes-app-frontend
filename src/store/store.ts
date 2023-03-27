@@ -3,9 +3,11 @@ import { createWrapper } from "next-redux-wrapper";
 
 import authReducer from "./slices/auth/authSlice";
 import usersReducer from "./slices/users/usersSlice";
+import notesReducer from "./slices/notes/notesSlice";
 
 import { authApi } from "../service/auth/authApi";
-import { usersApi } from "../service/users/userApi";
+import { usersApi } from "../service/users/usersApi";
+import { notesApi } from "../service/notes/notesApi";
 
 const makeStore = () =>
   configureStore({
@@ -13,13 +15,18 @@ const makeStore = () =>
       // Add the generated reducer as a specific top-level slice
       [authApi.reducerPath]: authApi.reducer,
       [usersApi.reducerPath]: usersApi.reducer,
+      [notesApi.reducerPath]: notesApi.reducer,
       auth: authReducer,
       users: usersReducer,
     },
     devTools: true,
 
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(authApi.middleware, usersApi.middleware),
+      getDefaultMiddleware().concat(
+        authApi.middleware,
+        usersApi.middleware,
+        notesApi.middleware
+      ),
   });
 
 export const wrapper = createWrapper(makeStore);

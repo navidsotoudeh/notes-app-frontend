@@ -1,24 +1,26 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: userTypes = {
-  token: undefined,
-  user: undefined,
-};
-
 const usersSlice = createSlice({
   name: "users",
-  initialState,
+  initialState: { allUsers: "abcdefg" },
   reducers: {
-    userLoggedIn: (state, action: PayloadAction<Required<userTypes>>) => {
-      state.token = action.payload.token;
-      state.user = action.payload.user;
+    setAllUsers: (state: any, action) => {
+      console.log("action:", action);
+      state.allUsers = action.payload;
     },
-    userLoggedOut: (state) => {
-      state.token = undefined;
-      state.user = undefined;
-    },
+    // userLoggedIn: (state, action: PayloadAction<Required<userTypes>>) => {
+    //   state.token = action.payload.token;
+    //   state.user = action.payload.user;
+    // },
+    // userLoggedOut: (state) => {
+    //   state.token = undefined;
+    //   state.user = undefined;
+    // },
   },
 });
 
-export const { userLoggedIn, userLoggedOut } = usersSlice.actions;
+export const { userLoggedIn, userLoggedOut, setAllUsers } = usersSlice.actions;
+
+export const selectAllUsers = (state) => state.users.allUsers;
+
 export default usersSlice.reducer;

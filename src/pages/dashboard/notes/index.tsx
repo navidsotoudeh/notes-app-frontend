@@ -7,8 +7,8 @@ import { NextPage } from "next";
 //component
 import Table from "../../../components/table";
 //redux
-import { useGetUsersQuery } from "../../../service/users/usersApi";
-const Users: NextPage = () => {
+import { useGetNotesQuery } from "../../../service/notes/notesApi";
+const Notes: NextPage = () => {
   //hooks
   const {
     data: users,
@@ -16,7 +16,7 @@ const Users: NextPage = () => {
     isSuccess,
     isError,
     error,
-  } = useGetUsersQuery("usersList", {
+  } = useGetNotesQuery("notesList", {
     pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -47,12 +47,12 @@ const Users: NextPage = () => {
   return (
     <div className="border border-gray-600 p-4 flex flex-col gap-4">
       <p> Welcome</p>
-      <p className="text-5xl">List of users</p>
+      <p className="text-5xl">List of Notes</p>
       <Link
-        href="./users/new-user"
+        href="./notes/new-note"
         className="py-2 px-4 bg-green-100 rounded-2xl w-[200px] flex justify-center"
       >
-        Add a user
+        Add a note
       </Link>
       {rows ? (
         <Table
@@ -71,10 +71,10 @@ const Users: NextPage = () => {
 export async function getStaticProps() {
   return {
     props: {
-      pageTitle: "Users",
-      pageId: 3,
+      pageTitle: "Notes",
+      pageId: 4,
     },
   };
 }
 
-export default Users;
+export default Notes;

@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
+import { setAllUsers } from "../../store/slices/users/usersSlice";
 
 const usersAdapter = createEntityAdapter({});
 const initialState = usersAdapter.getInitialState();
 
 export const usersApi = createApi({
-  reducerPath: "userApi",
+  reducerPath: "usersApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3500/" }),
   endpoints: (builder: any) => ({
     getUsers: builder.query({
@@ -15,6 +16,15 @@ export const usersApi = createApi({
           return response.status === 200 && !result.isError;
         },
       }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data);
+          dispatch(setAllUsers());
+        } catch (err) {
+          console.log(err);
+        }
+      },
       // transformResponse: (responseData: any) => {
       //   console.log("responseData,", responseData);
       //   const loadedUsers = responseData.map((user) => {

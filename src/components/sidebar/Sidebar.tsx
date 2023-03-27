@@ -37,7 +37,7 @@ const Sidebar = ({ sidebarStatus, onClose }) => {
 
       icon: <DocumentTextIcon className="h-6 w-6 text-white" />,
       subItems: [
-        { id: 1, label: "Notes", link: "" },
+        { id: 1, label: "Notes", link: "./dashboard/notes" },
         { id: 2, label: "New Notes" },
         { id: 3, label: "Completed Orders" },
       ],
