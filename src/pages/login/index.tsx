@@ -1,13 +1,13 @@
 //libraries
-import React from "react";
-import { Controller, useForm, SubmitHandler } from "react-hook-form";
+import React from 'react'
+import { Controller, useForm, SubmitHandler } from 'react-hook-form'
 
 //type
-import { NextPage } from "next";
-import { FormValues } from "./FormInterface";
+import { NextPage } from 'next'
+import { FormValues } from './FormInterface'
 
 //RTK
-import { useLoginUserMutation } from "../../service/auth/authApi";
+import { useLoginUserMutation } from '../../service/auth/authApi'
 
 const Login: NextPage = () => {
   //hooks
@@ -17,14 +17,14 @@ const Login: NextPage = () => {
     register,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm()
 
-  const [login, { isLoading }] = useLoginUserMutation();
+  const [login, { isLoading }] = useLoginUserMutation()
 
   const onSubmit: SubmitHandler<FormValues> = (userData) => {
     // dispatch(setContactForm(newContact));
-    login(userData);
-  };
+    login(userData)
+  }
   return (
     <form
       className="flex h-[400px] w-full flex-col items-center justify-center gap-2 bg-slate-200"
@@ -36,23 +36,23 @@ const Login: NextPage = () => {
       <div className="flex flex-col">
         <input
           type="text"
-          {...register("username", { required: true })}
+          {...register('username', { required: true })}
           className="rounded-xl border border-gray-400 p-4 outline-0"
           placeholder="username"
         />
         {errors.username && (
-          <span style={{ color: "red" }}>*username* is mandatory </span>
+          <span style={{ color: 'red' }}>*username* is mandatory </span>
         )}
       </div>
       <div className="flex flex-col">
         <input
           type="text"
-          {...register("password", { required: true })}
+          {...register('password', { required: true })}
           className="rounded-xl border border-gray-400 p-4 outline-0"
           placeholder="password"
         />
         {errors.password && (
-          <span style={{ color: "red" }}>*password* is mandatory </span>
+          <span style={{ color: 'red' }}>*password* is mandatory </span>
         )}
       </div>
       <input
@@ -60,16 +60,16 @@ const Login: NextPage = () => {
         className="rounded-xl border border-gray-400 bg-cyan-400 p-4 outline-0"
       />
     </form>
-  );
-};
+  )
+}
 
 export async function getStaticProps() {
   return {
     props: {
-      pageTitle: "Login",
+      pageTitle: 'Login',
       pageId: 1,
     },
-  };
+  }
 }
 
-export default Login;
+export default Login
