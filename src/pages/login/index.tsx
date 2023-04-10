@@ -1,14 +1,13 @@
 //libraries
 import React from "react";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
+
 //type
 import { NextPage } from "next";
 import { FormValues } from "./FormInterface";
 
-//component
-import Button from "@/components/UIKit/Button";
-import Input from "@/components/UIKit/Input";
-import Text from "@/components/UIKit/Text";
+//RTK
+import { useLoginUserMutation } from "../../service/auth/authApi";
 
 const Login: NextPage = () => {
   //hooks
@@ -20,58 +19,47 @@ const Login: NextPage = () => {
     reset,
   } = useForm();
 
-  const onSubmit: SubmitHandler<FormValues> = (newContact) => {
+  const [login, { isLoading }] = useLoginUserMutation();
+
+  const onSubmit: SubmitHandler<FormValues> = (userData) => {
     // dispatch(setContactForm(newContact));
+    login(userData);
   };
   return (
-    <div className="border border-gray-600 p-4">
-      <p className="bg-purple-300 w-[200px] py-4 rounded-2xl flex justify-center">
-        Registration Form
+    <form
+      className="flex h-[400px] w-full flex-col items-center justify-center gap-2 bg-slate-200"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <p className="flex w-[200px] justify-center rounded-2xl bg-purple-300 py-4">
+        Login Form
       </p>
-
-      <form
-        className="bg-white w-full flex items-center justify-center gap-2"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        {" "}
-        <div className="flex flex-col">
-          <input
-            type="text"
-            {...register("firstname", { required: true })}
-            className="border border-gray-400 p-4 outline-0 rounded-xl"
-            placeholder="firstname"
-          />
-          {errors.firstname && (
-            <span style={{ color: "red" }}>*firstname* is mandatory </span>
-          )}
-        </div>
-        <div className="flex flex-col">
-          <input
-            type="text"
-            {...register("lastname", { required: true })}
-            className="border border-gray-400 p-4 outline-0 rounded-xl"
-            placeholder="lastname"
-          />
-          {errors.lastname && (
-            <span style={{ color: "red" }}>*lastname* is mandatory </span>
-          )}
-        </div>
-        <div className="flex flex-col">
-          <input
-            type="email"
-            {...register("email", { required: true })}
-            className="border border-gray-400 p-4 outline-0 rounded-xl"
-          />
-          {errors.email && (
-            <span style={{ color: "red" }}>*email* is mandatory </span>
-          )}
-        </div>
+      <div className="flex flex-col">
         <input
-          type="submit"
-          className="border border-gray-400 p-4 outline-0 rounded-xl bg-cyan-400"
+          type="text"
+          {...register("username", { required: true })}
+          className="rounded-xl border border-gray-400 p-4 outline-0"
+          placeholder="username"
         />
-      </form>
-    </div>
+        {errors.username && (
+          <span style={{ color: "red" }}>*username* is mandatory </span>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <input
+          type="text"
+          {...register("password", { required: true })}
+          className="rounded-xl border border-gray-400 p-4 outline-0"
+          placeholder="password"
+        />
+        {errors.password && (
+          <span style={{ color: "red" }}>*password* is mandatory </span>
+        )}
+      </div>
+      <input
+        type="submit"
+        className="rounded-xl border border-gray-400 bg-cyan-400 p-4 outline-0"
+      />
+    </form>
   );
 };
 
