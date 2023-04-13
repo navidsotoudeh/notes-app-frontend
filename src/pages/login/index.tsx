@@ -1,29 +1,53 @@
 //libraries
 import React from 'react'
-import { Controller, useForm, SubmitHandler } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
 
 //type
 import { NextPage } from 'next'
 import { FormValues } from './FormInterface'
 
+import usePersist from '../../hooks/usePersist'
+
 //RTK
 import { useLoginUserMutation } from '../../service/auth/authApi'
+import { userLoggedIn } from '../../store/slices/auth/authSlice'
 
 const Login: NextPage = () => {
-  //hooks
+  //instances
   const {
     handleSubmit,
-    control,
     register,
     formState: { errors },
     reset,
   } = useForm()
+  const dispatch = useDispatch()
 
   const [login, { isLoading }] = useLoginUserMutation()
+  const [persist, setPersist] = usePersist()
+  const handleToggle = () => setPersist((prev: any) => !prev)
 
   const onSubmit: SubmitHandler<FormValues> = (userData) => {
-    // dispatch(setContactForm(newContact));
     login(userData)
+      .unwrap()
+      .then((res) => {
+        const accessToken = res
+        dispatch(userLoggedIn(accessToken))
+        reset()
+        toast.success('login sussefully')
+      })
+      .catch((err) => {
+        if (!err.status) {
+          toast.error('No Server Response')
+        } else if (err.status === 400) {
+          toast.error('Missing Username or Password')
+        } else if (err.status === 401) {
+          toast.error('Unauthorized')
+        } else {
+          toast.error(err.data?.message)
+        }
+      })
   }
   return (
     <form
@@ -59,6 +83,16 @@ const Login: NextPage = () => {
         type="submit"
         className="rounded-xl border border-gray-400 bg-cyan-400 p-4 outline-0"
       />
+      <label htmlFor="persist" className="flex items-end gap-4 leading-none">
+        <input
+          type="checkbox"
+          id="persist"
+          className="h-4 w-4"
+          onChange={handleToggle}
+          checked={persist}
+        />
+        Trust This Device
+      </label>
     </form>
   )
 }
