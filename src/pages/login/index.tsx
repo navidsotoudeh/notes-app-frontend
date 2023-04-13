@@ -32,7 +32,8 @@ const Login: NextPage = () => {
     login(userData)
       .unwrap()
       .then((res) => {
-        const accessToken = res
+        const accessToken = res.accessToken
+        console.log('accessToken', accessToken)
         dispatch(userLoggedIn(accessToken))
         reset()
         toast.success('login sussefully')

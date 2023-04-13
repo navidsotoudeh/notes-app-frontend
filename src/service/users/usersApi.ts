@@ -1,81 +1,65 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
-import { setAllUsers } from "../../store/slices/users/usersSlice";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createSelector, createEntityAdapter } from '@reduxjs/toolkit'
+import { setAllUsers } from '../../store/slices/users/usersSlice'
+import { coreNotesAppApi } from '../coreNotesAppApi'
 
-const usersAdapter = createEntityAdapter({});
-const initialState = usersAdapter.getInitialState();
+const usersAdapter = createEntityAdapter({})
+const initialState = usersAdapter.getInitialState()
 
-export const usersApi = createApi({
-  reducerPath: "usersApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3500/" }),
+export const usersApi = coreNotesAppApi.injectEndpoints({
   endpoints: (builder: any) => ({
     getUsers: builder.query({
       query: () => ({
-        url: "/users",
+        url: '/users',
         validateStatus: (response, result) => {
-          return response.status === 200 && !result.isError;
+          return response.status === 200 && !result.isError
         },
       }),
-      // transformResponse: (responseData) => {
-      //   const loadedUsers = responseData.map((user) => {
-      //     user.id = user._id;
-      //     return user;
-      //   });
-      //   return usersAdapter.setAll(initialState, loadedUsers);
-      // },
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled;
-          dispatch(setAllUsers(data));
+          const { data } = await queryFulfilled
+          dispatch(setAllUsers(data))
         } catch (err) {
-          console.log(err);
+          console.log(err)
         }
       },
-      // transformResponse: (responseData: any) => {
-      //   console.log("responseData,", responseData);
-      //   const loadedUsers = responseData.map((user) => {
-      //     user.id = user._id;
-      //     return user;
-      //   });
-      //   return usersAdapter.setAll(initialState, loadedUsers);
-      // },
       providesTags: (result, error, arg) => {
         if (result?.ids) {
           return [
-            { type: "User", id: "LIST" },
-            ...result.ids.map((id) => ({ type: "User", id })),
-          ];
-        } else return [{ type: "User", id: "LIST" }];
+            { type: 'User', id: 'LIST' },
+            ...result.ids.map((id) => ({ type: 'User', id })),
+          ]
+        } else return [{ type: 'User', id: 'LIST' }]
       },
     }),
     addNewUser: builder.mutation({
-      query: (user) => {
+      query: (user: any) => {
         return {
-          url: "/users",
-          method: "POST",
+          url: '/users',
+          method: 'POST',
           body: user,
           headers: {
-            "Content-type": "application/json",
+            'Content-type': 'application/json',
           },
-        };
+        }
       },
     }),
     updateUser: builder.mutation({
-      query: (initialUserData) => ({
-        url: "/users",
-        method: "PATCH",
+      query: (initialUserData: any) => ({
+        url: '/users',
+        method: 'PATCH',
         body: {
           ...initialUserData,
         },
       }),
-      invalidatesTags: (result, error, arg) => [{ type: "User", id: arg.id }],
+      invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg.id }],
     }),
   }),
-});
+})
 
 export const {
   useGetUsersQuery,
   useAddNewUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
-} = usersApi;
+} = usersApi

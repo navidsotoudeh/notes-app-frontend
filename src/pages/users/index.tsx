@@ -1,13 +1,13 @@
 //libraries
-import React, { useState, useEffect } from "react";
-import Router from "next/router";
-import Link from "next/link";
+import React, { useState, useEffect } from 'react'
+import Router from 'next/router'
+import Link from 'next/link'
 //type
-import { NextPage } from "next";
+import { NextPage } from 'next'
 //component
-import Table from "../../components/table";
+import Table from '../../components/table'
 //redux
-import { useGetUsersQuery } from "../../service/users/usersApi";
+import { useGetUsersQuery } from '../../service/users/usersApi'
 const Users: NextPage = () => {
   //hooks
   const {
@@ -15,14 +15,15 @@ const Users: NextPage = () => {
     isLoading,
     isSuccess,
     isError,
-    error,
-  } = useGetUsersQuery("usersList", {
+    error: usersError,
+  } = useGetUsersQuery('usersList', {
     pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
-  });
-  const [rows, setRows] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
+  })
+  console.log('usersError', usersError)
+  const [rows, setRows] = useState(null)
+  const [selectedUser, setSelectedUser] = useState(null)
 
   useEffect(() => {
     if (users && users?.length) {
@@ -30,48 +31,51 @@ const Users: NextPage = () => {
         Id: ele.id,
         Name: ele.username,
         Roles: ele.roles,
-      }));
-      setRows(newRows);
+      }))
+      setRows(newRows)
     }
     return function cleanup() {
       // Side-effect cleanup...
-    };
-  }, [users]);
+    }
+  }, [users])
   const handleOnEdit = (row) => {
-    setSelectedUser(row);
-    Router.push(`/dashboard/users/${row.Id}`);
-  };
+    setSelectedUser(row)
+    Router.push(`/dashboard/users/${row.Id}`)
+  }
   return (
-    <div className="border border-gray-600 p-4 flex flex-col gap-4">
+    <div className="flex flex-col gap-4 border border-gray-600 p-4">
       <p> Welcome</p>
       <p className="text-5xl">List of users</p>
       <Link
         href="./users/new-user"
-        className="py-2 px-4 bg-green-100 rounded-2xl w-[200px] flex justify-center"
+        className="flex w-[200px] justify-center rounded-2xl bg-green-100 py-2 px-4"
       >
         Add a user
       </Link>
-      {rows ? (
+
+      {isLoading ? (
+        isLoading
+      ) : rows ? (
         <Table
           rows={rows}
-          columns={["Id", "Name", "Roles"]}
+          columns={['Id', 'Name', 'Roles']}
           hasEdit={true}
           handleOnEdit={handleOnEdit}
         />
       ) : (
-        "isLoading"
+        `${usersError?.data?.message}`
       )}
     </div>
-  );
-};
+  )
+}
 
 export async function getStaticProps() {
   return {
     props: {
-      pageTitle: "Users",
+      pageTitle: 'Users',
       pageId: 3,
     },
-  };
+  }
 }
 
-export default Users;
+export default Users
