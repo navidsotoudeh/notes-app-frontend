@@ -8,11 +8,8 @@ import { useDispatch } from 'react-redux'
 import { NextPage } from 'next'
 import { FormValues } from './FormInterface'
 
-import usePersist from '../../hooks/usePersist'
-
 //RTK
 import { useLoginUserMutation } from '../../service/auth/authApi'
-import { userLoggedIn } from '../../store/slices/auth/authSlice'
 
 const Login: NextPage = () => {
   //instances
@@ -22,11 +19,8 @@ const Login: NextPage = () => {
     formState: { errors },
     reset,
   } = useForm()
-  const dispatch = useDispatch()
 
   const [login, { isLoading }] = useLoginUserMutation()
-  const [persist, setPersist] = usePersist()
-  const handleToggle = () => setPersist((prev: any) => !prev)
 
   const onSubmit: SubmitHandler<FormValues> = (userData) => {
     login(userData)
@@ -34,7 +28,7 @@ const Login: NextPage = () => {
       .then((res) => {
         const accessToken = res.accessToken
         console.log('accessToken', accessToken)
-        dispatch(userLoggedIn(accessToken))
+        // dispatch(userLoggedIn(accessToken))
         reset()
         toast.success('login sussefully')
       })
@@ -87,10 +81,10 @@ const Login: NextPage = () => {
       <label htmlFor="persist" className="flex items-end gap-4 leading-none">
         <input
           type="checkbox"
-          id="persist"
+          // id="persist"
           className="h-4 w-4"
-          onChange={handleToggle}
-          checked={persist}
+          // onChange={handleToggle}
+          // checked={persist}
         />
         Trust This Device
       </label>
