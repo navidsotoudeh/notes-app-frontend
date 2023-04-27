@@ -1,8 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { getCookie } from 'cookies-next'
 
-const initialState: userTypes = {
-  token: null,
+interface userTypes {
+  isLoggedIn: boolean
+  token: string | null
 }
+
+const initialState: userTypes = getCookie('token')
+  ? {
+      isLoggedIn: true,
+      token: null,
+    }
+  : {
+      isLoggedIn: false,
+      token: null,
+    }
 
 const authSlice = createSlice({
   name: 'auth',
@@ -11,9 +23,11 @@ const authSlice = createSlice({
     userLoggedIn: (state, action: PayloadAction<Required<userTypes>>) => {
       console.log('action.payload', action.payload)
       state.token = action.payload
+      state.isLoggedIn = true
     },
-    userLoggedOut: (state) => {
+    userLoggedOut: (state, action) => {
       state.token = null
+      state.isLoggedIn = false
     },
   },
 })

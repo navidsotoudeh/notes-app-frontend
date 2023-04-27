@@ -1,5 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { createSelector, createEntityAdapter } from '@reduxjs/toolkit'
+import { createEntityAdapter } from '@reduxjs/toolkit'
 import { setAllUsers } from '../../store/slices/users/usersSlice'
 import { coreNotesAppApi } from '../coreNotesAppApi'
 
