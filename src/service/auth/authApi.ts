@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { userLoggedIn } from '../../store/slices/auth/authSlice'
+import { userLoggedIn } from '@/store/slices/auth/authSlice'
+import { setCookie } from 'cookies-next'
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -14,10 +15,14 @@ export const authApi = createApi({
         }
       },
       async onQueryStarted(data, { queryFulfilled, dispatch }) {
+        setCookie('notesapp-accessToken', '654-rm-accessToken123456')
+        dispatch(userLoggedIn(data.accessToken))
+        console.log('202020')
         try {
-          const { data } = await queryFulfilled
-          localStorage.setItem('notesapp-accessToken', data.accessToken)
-          dispatch(userLoggedIn(data.accessToken))
+          // const { data } = await queryFulfilled
+          // // localStorage.setItem('notesapp-accessToken', data.accessToken)
+          // setCookie('notesapp-accessToken', data.accessToken)
+          // dispatch(userLoggedIn(data.accessToken))
         } catch {}
       },
     }),

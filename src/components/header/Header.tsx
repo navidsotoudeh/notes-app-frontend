@@ -11,7 +11,6 @@ function Header() {
   useEffect(() => {
     setToken(localStorage.getItem('notesapp-accessToken'))
   }, [])
-  console.log('token', token)
 
   return (
     <div className="flex h-[50px] w-full items-center justify-between bg-white text-lg">

@@ -3,23 +3,21 @@ import { getCookie } from 'cookies-next'
 import jwt from 'jsonwebtoken'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
-
+import { wrapper } from '../store/store'
 import { userLoggedOut } from '../store/slices/auth/authSlice'
 
 export default function Home({ isAuthenticated }) {
-  console.log('isAuthenticated', isAuthenticated)
-
   const dispatch = useDispatch()
   const isLoggedIn = useSelector((state) => state.auth?.isLoggedIn)
   const router = useRouter()
 
-  useLayoutEffect(() => {
-    // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
-    if (!isAuthenticated || !isLoggedIn) {
-      dispatch(userLoggedOut())
-      router.push('/login')
-    }
-  }, [isAuthenticated, isLoggedIn])
+  // useLayoutEffect(() => {
+  //   // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+  //   if (!isAuthenticated || !isLoggedIn) {
+  //     dispatch(userLoggedOut())
+  //     router.push('/login')
+  //   }
+  // }, [isAuthenticated, isLoggedIn])
 
   return (
     <>
@@ -30,17 +28,54 @@ export default function Home({ isAuthenticated }) {
   )
 }
 
-export const getServerSideProps = async ({ req, res }) => {
-  const cookie = getCookie('token', { req, res })
-  if (!cookie) return { props: { isAuthenticated: false } }
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req, res }) => {
+      // await store.dispatch(getRooms(req))
+      console.log('35--------')
+      const cookie = getCookie('notesapp-accessToken', { req, res })
+      console.log('37--', cookie)
+      if (!cookie)
+        return {
+          redirect: {
+            permanent: false,
+            source: '/',
+            destination: '/?fallback=/login/users',
+          },
+        }
+    }
+)
 
-  try {
-    const isAuthenticated = await jwt.verify(
-      cookie,
-      process.env.NEXT_PUBLIC_JWT_KEY
-    )
-    return { props: { isAuthenticated: isAuthenticated } }
-  } catch (err) {
-    return { props: { isAuthenticated: false } }
-  }
-}
+// export async function getServerSideProps(context: any) {
+//     let shouldUpdateCookie = false;
+//     const newToken = await getGuestToken(context);
+//
+//     const menuInstance = new HandleMenu();
+//     const userInstance = new HandleUser();
+//
+//     try {
+//         const userInstance = new HandleUser();
+//         const user = await userInstance.getUser(newToken);
+//     } catch (e) {
+//         return {
+//             redirect: {
+//                 permanent: false,
+//                 destination: '/?fallback=/profile/dashboard',
+//             },
+//         };
+//     }
+//
+//     const menu = await menuInstance.getMega(newToken);
+//     const user = await userInstance.getUser(newToken);
+//     const orders = await userInstance.getOrders(newToken);
+//
+//     return {
+//         props: {
+//             metaData: { title: 'پروفایل کاربری' },
+//             token: newToken,
+//             user: user.data,
+//             menu: menu.data,
+//             orders: orders.data,
+//         },
+//     };
+// }

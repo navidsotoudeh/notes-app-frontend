@@ -1,13 +1,13 @@
 //libraries
-import eact, { useState, useEffect } from "react";
-import Router from "next/router";
-import Link from "next/link";
+import eact, { useState, useEffect } from 'react'
+import Router from 'next/router'
+import Link from 'next/link'
 //type
-import { NextPage } from "next";
+import { NextPage } from 'next'
 //component
-import Table from "../../components/table";
+import Table from '../../components/table'
 //redux
-import { useGetNotesQuery } from "../../service/notes/notesApi";
+import { useGetNotesQuery } from '../../service/notes/notesApi'
 const Notes: NextPage = () => {
   //hooks
   const {
@@ -16,14 +16,13 @@ const Notes: NextPage = () => {
     isSuccess,
     isError,
     error,
-  } = useGetNotesQuery("notesList", {
+  } = useGetNotesQuery('notesList', {
     pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
-  });
-  console.log("notes", notes);
-  const [rows, setRows] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
+  })
+  const [rows, setRows] = useState(null)
+  const [selectedUser, setSelectedUser] = useState(null)
 
   useEffect(() => {
     if (notes && notes?.length) {
@@ -33,48 +32,48 @@ const Notes: NextPage = () => {
         Roles: ele.roles,
         Title: ele.title,
         Text: ele.text,
-      }));
-      setRows(newRows);
+      }))
+      setRows(newRows)
     }
     return function cleanup() {
       // Side-effect cleanup...
-    };
-  }, [notes]);
+    }
+  }, [notes])
   const handleOnEdit = (row) => {
-    setSelectedUser(row);
-    Router.push(`/dashboard/notes/${row.Id}`);
-  };
+    setSelectedUser(row)
+    Router.push(`/dashboard/notes/${row.Id}`)
+  }
   return (
-    <div className="border border-gray-600 p-4 flex flex-col gap-4 w-full bg-yellow-200">
+    <div className="flex w-full flex-col gap-4 border border-gray-600 bg-yellow-200 p-4">
       <p> Welcome</p>
       <p className="text-5xl">List of Notes</p>
       <Link
         href="./notes/new-note"
-        className="py-2 px-4 bg-green-100 rounded-2xl w-[200px] flex justify-center"
+        className="flex w-[200px] justify-center rounded-2xl bg-green-100 px-4 py-2"
       >
         Add a note
       </Link>
       {rows ? (
         <Table
           rows={rows}
-          columns={["Id", "Name", "Roles", "Title", "Text"]}
+          columns={['Id', 'Name', 'Roles', 'Title', 'Text']}
           hasEdit={true}
           handleOnEdit={handleOnEdit}
         />
       ) : (
-        "isLoading"
+        'isLoading'
       )}
     </div>
-  );
-};
+  )
+}
 
 export async function getStaticProps() {
   return {
     props: {
-      pageTitle: "Notes",
+      pageTitle: 'Notes',
       pageId: 4,
     },
-  };
+  }
 }
 
-export default Notes;
+export default Notes

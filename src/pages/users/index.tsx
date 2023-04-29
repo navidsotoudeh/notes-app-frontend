@@ -21,7 +21,7 @@ const Users: NextPage = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
-  console.log('usersError', usersError)
+
   const [rows, setRows] = useState(null)
   const [selectedUser, setSelectedUser] = useState(null)
 
@@ -48,7 +48,7 @@ const Users: NextPage = () => {
       <p className="text-5xl">List of users</p>
       <Link
         href="./users/new-user"
-        className="flex w-[200px] justify-center rounded-2xl bg-green-100 py-2 px-4"
+        className="flex w-[200px] justify-center rounded-2xl bg-green-100 px-4 py-2"
       >
         Add a user
       </Link>

@@ -21,7 +21,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     userLoggedIn: (state, action: PayloadAction<Required<userTypes>>) => {
-      console.log('action.payload', action.payload)
       state.token = action.payload
       state.isLoggedIn = true
     },
