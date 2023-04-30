@@ -28,23 +28,23 @@ export default function Home({ isAuthenticated }) {
   )
 }
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req, res }) => {
-      // await store.dispatch(getRooms(req))
-      console.log('35--------')
-      const cookie = getCookie('notesapp-accessToken', { req, res })
-      console.log('37--', cookie)
-      if (!cookie)
-        return {
-          redirect: {
-            permanent: false,
-            source: '/',
-            destination: '/?fallback=/login/users',
-          },
-        }
-    }
-)
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   (store) =>
+//     async ({ req, res }) => {
+//       // await store.dispatch(getRooms(req))
+//       console.log('35--------')
+//       const cookie = getCookie('notesapp-accessToken', { req, res })
+//       console.log('37--', cookie)
+//       if (!cookie)
+//         return {
+//           redirect: {
+//             permanent: false,
+//             source: '/',
+//             destination: '/?fallback=/login/users',
+//           },
+//         }
+//     }
+// )
 
 // export async function getServerSideProps(context: any) {
 //     let shouldUpdateCookie = false;
