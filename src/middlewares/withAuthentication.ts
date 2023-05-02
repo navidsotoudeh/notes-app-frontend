@@ -5,7 +5,9 @@ import { MiddlewareFactory } from '@/middlewares/types'
 
 export const withAuthentication: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
-    return NextResponse.redirect(new URL('/varzesh3.com/', request.url))
+    if (request.nextUrl.pathname.includes('/users')) {
+      return NextResponse.redirect(new URL('/notes', request.url))
+    }
   }
 }
 
