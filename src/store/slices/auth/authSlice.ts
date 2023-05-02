@@ -3,13 +3,17 @@ import { getCookie } from 'cookies-next'
 
 interface userTypes {
   isLoggedIn: boolean
-  accessToken: string | null
+  accessToken: string
 }
 
-const initialState: userTypes = getCookie('token')
+const initialAccessToken = getCookie('notesapp-accessToken')
+
+console.log('initialAccessToken', initialAccessToken)
+
+const initialState: userTypes = initialAccessToken
   ? {
       isLoggedIn: true,
-      accessToken: null,
+      accessToken: initialAccessToken,
     }
   : {
       isLoggedIn: false,
@@ -21,7 +25,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     userLoggedIn: (state, action: PayloadAction<Required<userTypes>>) => {
-      console.log('action 24', action)
       state.accessToken = action.payload
       state.isLoggedIn = true
     },

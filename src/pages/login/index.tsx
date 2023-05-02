@@ -30,9 +30,6 @@ const Login: NextPage = () => {
 
   const accessToken = useSelector((state) => state.auth?.accessToken)
 
-  console.log('accessToken', accessToken)
-  console.log('backUrl', backUrl)
-
   useEffect(() => {
     if (backUrl && accessToken) {
       router.push(decodeURIComponent(backUrl.toString()))
@@ -44,7 +41,6 @@ const Login: NextPage = () => {
       .unwrap()
       .then((res) => {
         const accessToken = res.accessToken
-        console.log('accessToken', accessToken)
 
         reset()
         toast.success('login sussefully')

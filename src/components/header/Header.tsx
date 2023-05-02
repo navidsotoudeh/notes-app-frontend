@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { LoginIcon, LogoutIcon } from '@heroicons/react/solid'
-import { selectCurrentToken } from '../../store/slices/auth/authSlice'
+
 import Router from 'next/router'
 
 function Header() {
-  // const token = useSelector(selectCurrentToken)
-  const [token, setToken] = useState(null)
-
-  useEffect(() => {
-    setToken(localStorage.getItem('notesapp-accessToken'))
-  }, [])
+  const accessToken = useSelector((state) => state.auth?.accessToken)
 
   return (
     <div className="flex h-[50px] w-full items-center justify-between bg-white text-lg">
       <div className="flex w-5/12 justify-start px-4">
-        {token ? (
+        {accessToken ? (
           <div className="flex items-center justify-evenly gap-2">
             <LoginIcon className="h-6 w-6 hover:cursor-pointer" />
-            <p>you are logged in</p>
+            <div>you are logged in</div>
           </div>
         ) : (
           <div
@@ -27,7 +22,7 @@ function Header() {
               Router.push('/login')
             }}
           >
-            <LogoutIcon className="h-6 w-6" /> <p>you are logged out</p>
+            <LogoutIcon className="h-6 w-6" /> <div>you are logged out</div>
           </div>
         )}
       </div>
