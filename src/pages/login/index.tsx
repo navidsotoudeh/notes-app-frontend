@@ -1,8 +1,9 @@
 //libraries
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 //type
 import { NextPage } from 'next'
@@ -13,6 +14,9 @@ import { useLoginUserMutation } from '../../service/auth/authApi'
 
 const Login: NextPage = () => {
   //instances
+  const router = useRouter()
+  const dispatch = useDispatch()
+
   const {
     handleSubmit,
     register,
@@ -22,13 +26,26 @@ const Login: NextPage = () => {
 
   const [login, { isLoading }] = useLoginUserMutation()
 
+  const { backUrl } = router.query
+
+  const accessToken = useSelector((state) => state.auth?.accessToken)
+
+  console.log('accessToken', accessToken)
+  console.log('backUrl', backUrl)
+
+  useEffect(() => {
+    if (backUrl && accessToken) {
+      router.push(decodeURIComponent(backUrl.toString()))
+    }
+  }, [backUrl, accessToken])
+
   const onSubmit: SubmitHandler<FormValues> = (userData) => {
     login(userData)
       .unwrap()
       .then((res) => {
         const accessToken = res.accessToken
         console.log('accessToken', accessToken)
-        // dispatch(userLoggedIn(accessToken))
+
         reset()
         toast.success('login sussefully')
       })
@@ -44,6 +61,7 @@ const Login: NextPage = () => {
         }
       })
   }
+
   return (
     <form
       className="flex h-[400px] w-full flex-col items-center justify-center gap-2 bg-slate-200"

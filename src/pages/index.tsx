@@ -1,13 +1,16 @@
 import { useEffect, useLayoutEffect } from 'react'
 import { getCookie } from 'cookies-next'
-import jwt from 'jsonwebtoken'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { wrapper } from '../store/store'
 import { userLoggedOut } from '../store/slices/auth/authSlice'
 
-export default function Home({ isAuthenticated }) {
+interface IProps {
+  isAuthenticated: boolean
+}
+export default function Home({ isAuthenticated }: IProps) {
   const dispatch = useDispatch()
+  // @ts-ignore
   const isLoggedIn = useSelector((state) => state.auth?.isLoggedIn)
   const router = useRouter()
 

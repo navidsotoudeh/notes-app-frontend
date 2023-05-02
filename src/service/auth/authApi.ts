@@ -16,7 +16,8 @@ export const authApi = createApi({
       },
       async onQueryStarted(data, { queryFulfilled, dispatch }) {
         setCookie('notesapp-accessToken', '654-rm-accessToken123456')
-        dispatch(userLoggedIn(data.accessToken))
+        // dispatch(userLoggedIn(data.accessToken))
+        dispatch(userLoggedIn('654-rm-accessToken123456'))
         console.log('202020')
         try {
           // const { data } = await queryFulfilled

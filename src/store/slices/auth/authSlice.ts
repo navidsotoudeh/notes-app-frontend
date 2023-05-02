@@ -3,17 +3,17 @@ import { getCookie } from 'cookies-next'
 
 interface userTypes {
   isLoggedIn: boolean
-  token: string | null
+  accessToken: string | null
 }
 
 const initialState: userTypes = getCookie('token')
   ? {
       isLoggedIn: true,
-      token: null,
+      accessToken: null,
     }
   : {
       isLoggedIn: false,
-      token: null,
+      accessToken: null,
     }
 
 const authSlice = createSlice({
@@ -21,11 +21,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     userLoggedIn: (state, action: PayloadAction<Required<userTypes>>) => {
-      state.token = action.payload
+      console.log('action 24', action)
+      state.accessToken = action.payload
       state.isLoggedIn = true
     },
     userLoggedOut: (state, action) => {
-      state.token = null
+      state.accessToken = null
       state.isLoggedIn = false
     },
   },

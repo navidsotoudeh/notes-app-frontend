@@ -16,7 +16,9 @@ export const withAuthentication: MiddlewareFactory = (next) => {
     const token = request.cookies.get('notesapp-accessToken')?.value ?? ''
 
     if (request.url.includes('/users') && !token) {
-      return NextResponse.redirect(new URL('/login', request.url))
+      return NextResponse.redirect(
+        new URL(`/login?backUrl=/users`, request.url)
+      )
     }
   }
 }
