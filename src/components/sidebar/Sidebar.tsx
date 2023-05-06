@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import Router from "next/router";
-import { Transition } from "@headlessui/react";
+import React, { useState } from 'react'
+import Router from 'next/router'
+import { Transition } from '@headlessui/react'
 
 import {
   ChevronDownIcon,
@@ -8,55 +8,55 @@ import {
   HomeIcon,
   UserIcon,
   DocumentTextIcon,
-} from "@heroicons/react/solid";
+} from '@heroicons/react/solid'
 
 const Sidebar = ({ sidebarStatus, onClose }) => {
-  const [openItems, setOpenItems] = useState([]);
+  const [openItems, setOpenItems] = useState([])
 
   const toggleItem = (itemId) => {
     setOpenItems((prevOpenItems) => {
       if (prevOpenItems.includes(itemId)) {
-        return prevOpenItems.filter((id) => id !== itemId);
+        return prevOpenItems.filter((id) => id !== itemId)
       } else {
-        return [...prevOpenItems, itemId];
+        return [...prevOpenItems, itemId]
       }
-    });
-  };
+    })
+  }
 
   // Array of items to display in the sidebar
   const items = [
     {
       parent_id: 1,
-      label: "Dashboard",
-      link: "./dashboard",
+      label: 'Dashboard',
+      link: './dashboard',
       icon: <HomeIcon className="h-6 w-6 text-white" />,
       subItems: [],
     },
     {
       parent_id: 2,
-      label: "Notes",
+      label: 'Notes',
 
       icon: <DocumentTextIcon className="h-6 w-6 text-white" />,
       subItems: [
-        { id: 1, label: "Notes", link: "./notes" },
-        { id: 2, label: "New Notes", link: "./notes/new-note" },
+        { id: 1, label: 'Notes', link: './notes' },
+        { id: 2, label: 'New Notes', link: './notes/new-note' },
       ],
     },
     {
       parent_id: 3,
-      label: "Users",
+      label: 'Users',
 
       icon: <UserIcon className="h-6 w-6 text-white" />,
       subItems: [
-        { id: 1, label: "Users", link: "./users" },
-        { id: 2, label: "New User", link: "./users/new-user" },
+        { id: 1, label: 'Users', link: './users' },
+        { id: 2, label: 'New User', link: './users/new-user' },
       ],
     },
-  ];
+  ]
 
   const renderSubItems = (subItems, isOpen) => {
     return (
-      <div className="ml-6 my-2">
+      <div className="my-2 ml-6">
         <Transition
           show={isOpen}
           enter="transition-transform origin-top duration-300"
@@ -77,16 +77,16 @@ const Sidebar = ({ sidebarStatus, onClose }) => {
           ))}
         </Transition>
       </div>
-    );
-  };
+    )
+  }
 
   const renderItem = (item) => {
-    const isOpen = openItems.includes(item.parent_id);
+    const isOpen = openItems.includes(item.parent_id)
 
     return (
       <div key={item.parent_id} className="">
         <div
-          className="flex items-center my-4 cursor-pointer"
+          className="my-4 flex cursor-pointer items-center"
           onClick={() => toggleItem(item.parent_id)}
         >
           {item.icon}
@@ -101,23 +101,23 @@ const Sidebar = ({ sidebarStatus, onClose }) => {
         </div>
         {item.subItems && renderSubItems(item.subItems, isOpen)}
       </div>
-    );
-  };
+    )
+  }
 
   // Function to render all items
   const renderItems = () => {
-    return items.map(renderItem);
-  };
+    return items.map(renderItem)
+  }
 
   return (
     <div
-      className={`h-full bg-gray-800 z-10 transition-all duration-300 ease-in-out ${
-        sidebarStatus ? "w-[300px]" : "w-[120px]"
+      className={`z-10 h-full bg-gray-800 transition-all duration-300 ease-in-out ${
+        sidebarStatus ? 'w-[300px]' : 'w-[200px]'
       }`}
     >
       <button className="p-4 text-white" onClick={onClose}>
         <svg
-          className="w-6 h-6 fill-current"
+          className="h-6 w-6 fill-current"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -131,7 +131,7 @@ const Sidebar = ({ sidebarStatus, onClose }) => {
       </button>
       {renderItems()}
     </div>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

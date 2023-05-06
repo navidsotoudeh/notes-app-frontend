@@ -1,24 +1,18 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-const initialState: noteTypes = {
-  token: undefined,
-  user: undefined,
-};
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppState } from '@/store/store'
 
 const notesSlice = createSlice({
-  name: "notes",
-  initialState,
+  name: 'notes',
+  initialState: { allNotes: null },
   reducers: {
-    userLoggedIn: (state, action: PayloadAction<Required<userTypes>>) => {
-      state.token = action.payload.token;
-      state.user = action.payload.user;
-    },
-    userLoggedOut: (state) => {
-      state.token = undefined;
-      state.user = undefined;
+    setAllNotes: (state: any, action) => {
+      state.allNotes = action.payload
     },
   },
-});
+})
 
-export const { userLoggedIn, userLoggedOut } = notesSlice.actions;
-export default notesSlice.reducer;
+export const { setAllNotes } = notesSlice.actions
+
+export const selectAllNotes = (state: AppState) => state.notes.allNotes
+
+export default notesSlice.reducer

@@ -1,30 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getCookie } from 'cookies-next'
+// import { getCookie } from 'cookies-next'
 
 interface userTypes {
   isLoggedIn: boolean
-  accessToken: string
+  accessToken: string | null
 }
 
-const initialAccessToken = getCookie('notesapp-accessToken')
+// const initialAccessToken = getCookie('notesapp-accessToken')
 
-console.log('initialAccessToken', initialAccessToken)
-
-const initialState: userTypes = initialAccessToken
-  ? {
-      isLoggedIn: true,
-      accessToken: initialAccessToken,
-    }
-  : {
-      isLoggedIn: false,
-      accessToken: null,
-    }
+const initialState: userTypes = {
+  isLoggedIn: false,
+  accessToken: null,
+}
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    userLoggedIn: (state, action: PayloadAction<Required<userTypes>>) => {
+    userLoggedIn: (state, action: any) => {
       state.accessToken = action.payload
       state.isLoggedIn = true
     },
@@ -38,6 +31,3 @@ const authSlice = createSlice({
 export const { userLoggedIn, userLoggedOut } = authSlice.actions
 
 export default authSlice.reducer
-
-// export const selectCurrentToken = () =>
-//   localStorage.getItem('notesapp-accessToken')

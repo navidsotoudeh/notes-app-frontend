@@ -1,13 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { createWrapper } from "next-redux-wrapper";
+import { configureStore } from '@reduxjs/toolkit'
+import { createWrapper } from 'next-redux-wrapper'
 
-import authReducer from "./slices/auth/authSlice";
-import usersReducer from "./slices/users/usersSlice";
-import notesReducer from "./slices/notes/notesSlice";
+import authReducer from './slices/auth/authSlice'
+import usersReducer from './slices/users/usersSlice'
+import notesReducer from './slices/notes/notesSlice'
 
-import { authApi } from "../service/auth/authApi";
-import { usersApi } from "../service/users/usersApi";
-import { notesApi } from "../service/notes/notesApi";
+import { authApi } from '@/service/auth/authApi'
+import { usersApi } from '@/service/users/usersApi'
+import { notesApi } from '@/service/notes/notesApi'
 
 const makeStore = () =>
   configureStore({
@@ -18,6 +18,7 @@ const makeStore = () =>
       [notesApi.reducerPath]: notesApi.reducer,
       auth: authReducer,
       users: usersReducer,
+      notes: notesReducer,
     },
     devTools: true,
 
@@ -27,6 +28,10 @@ const makeStore = () =>
         usersApi.middleware,
         notesApi.middleware
       ),
-  });
+  })
 
-export const wrapper = createWrapper(makeStore);
+const store = makeStore()
+
+export type AppState = ReturnType<typeof store.getState>
+
+export const wrapper = createWrapper(makeStore)

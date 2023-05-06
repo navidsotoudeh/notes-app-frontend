@@ -5,6 +5,7 @@ import { LoginIcon, LogoutIcon } from '@heroicons/react/solid'
 import Router from 'next/router'
 
 function Header() {
+  // @ts-ignore
   const accessToken = useSelector((state) => state.auth?.accessToken)
 
   return (

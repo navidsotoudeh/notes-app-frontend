@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import type { AppState } from '../../store'
 
 const usersSlice = createSlice({
   name: 'users',
@@ -12,6 +13,6 @@ const usersSlice = createSlice({
 
 export const { setAllUsers } = usersSlice.actions
 
-export const selectAllUsers = (state) => state.users.allUsers
+export const selectAllUsers = (state: AppState) => state.users.allUsers
 
 export default usersSlice.reducer
