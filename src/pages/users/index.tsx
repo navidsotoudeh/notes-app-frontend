@@ -7,7 +7,7 @@ import { NextPage } from 'next'
 //component
 import Table from '../../components/table'
 //redux
-import { useGetUsersQuery } from '../../service/users/usersApi'
+import { useGetUsersQuery } from '@/service/users/usersApi'
 const Users: NextPage = () => {
   //hooks
   const {
