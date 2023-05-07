@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import { getCookie } from 'cookies-next'
+import Cookies from 'js-cookie'
 
 interface userTypes {
   isLoggedIn: boolean
@@ -7,11 +8,19 @@ interface userTypes {
 }
 
 // const initialAccessToken = getCookie('notesapp-accessToken')
+// const initialState = {
+//   value: Cookies.get('notesapp-accessToken') || '',
+// }
 
-const initialState: userTypes = {
-  isLoggedIn: false,
-  accessToken: null,
-}
+const initialState: userTypes = Cookies.get('notesapp-accessToken')
+  ? {
+      isLoggedIn: false,
+      accessToken: Cookies.get('notesapp-accessToken'),
+    }
+  : {
+      isLoggedIn: false,
+      accessToken: null,
+    }
 
 const authSlice = createSlice({
   name: 'auth',

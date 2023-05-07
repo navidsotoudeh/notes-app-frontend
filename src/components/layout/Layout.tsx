@@ -1,11 +1,9 @@
 //libraries
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Header from '@/components/header/Header'
 import Sidebar from '@/components/sidebar/Sidebar'
-import { GetServerSideProps } from 'next'
-import { useDispatch } from 'react-redux'
 
-export default function Layout({ children }) {
+export default function Layout({ children }: any) {
   const [sidebarStatus, setSidebarStatus] = useState(true)
 
   return (
@@ -20,18 +18,4 @@ export default function Layout({ children }) {
       </div>
     </main>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context
-  const cookieValue = req.cookies['notesapp-accessToken']
-
-  const initialValue = { value: cookieValue } // Set your initial state object here
-
-  const dispatch = useDispatch()
-  dispatch(setInitialValue(initialValue))
-
-  return {
-    props: { initialValue },
-  }
 }
