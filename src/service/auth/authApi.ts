@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { setCredentials } from '@/store/slices/auth/authSlice'
+import { setCredentials, logOut } from '@/store/slices/auth/authSlice'
 import { setCookie } from 'cookies-next'
+import Router from 'next/router'
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -27,6 +28,25 @@ export const authApi = createApi({
         } catch {}
       },
     }),
+    sendLogout: builder.mutation({
+      query: () => ({
+        url: '/auth/logout',
+        method: 'POST',
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled
+          console.log(data)
+          Router.push('/')
+          dispatch(logOut())
+          setTimeout(() => {
+            dispatch(apiSlice.util.resetApiState())
+          }, 1000)
+        } catch (err) {
+          console.log(err)
+        }
+      },
+    }),
     sendPasswordResetEmailUser: builder.mutation({
       query: (user) => {
         return {
@@ -51,17 +71,6 @@ export const authApi = createApi({
         }
       },
     }),
-    getLoggedUser: builder.query({
-      query: (token) => {
-        return {
-          url: `loggeduser`,
-          method: 'GET',
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      },
-    }),
 
     changeUserPassword: builder.mutation({
       query: ({ actualData, token }) => {
@@ -79,7 +88,7 @@ export const authApi = createApi({
 })
 
 export const {
-  useGetLoggedUserQuery,
+  useSendLogoutMutation,
   useResetPasswordMutation,
   useLoginUserMutation,
   useSendPasswordResetEmailUserMutation,
