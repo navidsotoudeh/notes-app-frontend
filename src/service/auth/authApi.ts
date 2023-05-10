@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials, logOut } from '@/store/slices/auth/authSlice'
 import { setCookie } from 'cookies-next'
 import Router from 'next/router'
+import Cookies from 'js-cookie'
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -16,10 +17,9 @@ export const authApi = createApi({
         }
       },
       async onQueryStarted(data, { queryFulfilled, dispatch }) {
-        setCookie('notesapp-accessToken', '654-rm-accessToken123456')
+        Cookies.set('notesapp-accessToken', '654-rm-accessToken123456')
         // dispatch(userLoggedIn(data.accessToken))
         dispatch(setCredentials('654-rm-accessToken123456'))
-        console.log('202020')
         try {
           // const { data } = await queryFulfilled
           // // localStorage.setItem('notesapp-accessToken', data.accessToken)
@@ -34,17 +34,21 @@ export const authApi = createApi({
         method: 'POST',
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled
-          console.log(data)
-          Router.push('/')
-          dispatch(logOut())
-          setTimeout(() => {
-            dispatch(apiSlice.util.resetApiState())
-          }, 1000)
-        } catch (err) {
-          console.log(err)
-        }
+        Router.push('/')
+        console.log('38')
+        dispatch(logOut())
+        Cookies.remove('notesapp-accessToken')
+        // try {
+        //   const { data } = await queryFulfilled
+        //   console.log(data)
+        //   Router.push('/')
+        //   dispatch(logOut())
+        //   setTimeout(() => {
+        //     dispatch(apiSlice.util.resetApiState())
+        //   }, 1000)
+        // } catch (err) {
+        //   console.log(err)
+        // }
       },
     }),
     sendPasswordResetEmailUser: builder.mutation({

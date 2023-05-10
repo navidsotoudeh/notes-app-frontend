@@ -4,7 +4,6 @@ import { LoginIcon, LogoutIcon } from '@heroicons/react/solid'
 import Router from 'next/router'
 
 //Redux
-import { userLoggedOut } from '@/store/slices/auth/authSlice'
 import { useSendLogoutMutation } from '../../service/auth/authApi'
 
 function Header() {
@@ -12,7 +11,7 @@ function Header() {
     useSendLogoutMutation()
   // @ts-ignore
   const accessToken = useSelector((state) => state.auth?.accessToken)
-
+  console.log('accessToken', accessToken)
   const dispatch = useDispatch()
 
   return (
@@ -23,10 +22,13 @@ function Header() {
         <div className="flex w-5/12 justify-start px-4">
           {!!accessToken ? (
             <div
-              className="flex items-center justify-evenly gap-2"
-              onClick={() => sendLogout}
+              className="flex items-center justify-evenly gap-2 hover:cursor-pointer"
+              onClick={() => {
+                sendLogout()
+                console.log('29')
+              }}
             >
-              <LoginIcon className="h-6 w-6 hover:cursor-pointer" />
+              <LoginIcon className="h-6 w-6 " />
               <div>you are logged in</div>
             </div>
           ) : (
